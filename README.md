@@ -1,6 +1,6 @@
 # Projet Dev
 
-# FRENCH 
+# FRANÇAIS 
 ## Comment démarrer le server
 
 ---
