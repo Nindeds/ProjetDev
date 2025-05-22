@@ -13,6 +13,7 @@ cd server
 Vous pouvez ensuite démarrer le fichier ``MatchmaingServer.java``, en écrivant dans le terminal une fois que vous êtes dans le dossier server : ``java MatchmakingServer.java``
 
 Ou si vous utilisez IntelliJ, vous pouvez simplement le démarrer en faisant clique droit sur le dossier `MatchmakingServer`
+
 <img src="./img/startserver.png">
 
 ## Comment jouer au jeu
@@ -44,11 +45,6 @@ Si vous décidez de jouer en multi-joueur, vous devrez d'abord entrer l'ip de la
 <img src="./img/multiplayermenu.png">
 
 Si la partie ne commence pas tout de suite après avoir choisi votre nom d'utilisateur, c'est parce que vous êtes le seul joueur connecté au serveur, une fois qu'un autre joueur sera connecté et qu'il aura choisi son pseudonyme, la partie commencera tout de suite après.
-# 
-
-##
-
-
 
 
 # ENGLISH
