@@ -10,47 +10,47 @@ public class MatchHandler implements Runnable {
     @Override
     public void run() {
         try {
-            BufferedReader in1 = new BufferedReader(new InputStreamReader(match.joueur1.socket.getInputStream()));
-            BufferedReader in2 = new BufferedReader(new InputStreamReader(match.joueur2.socket.getInputStream()));
-            PrintWriter out1 = new PrintWriter(match.joueur1.socket.getOutputStream(), true);
-            PrintWriter out2 = new PrintWriter(match.joueur2.socket.getOutputStream(), true);
+            BufferedReader in1 = new BufferedReader(new InputStreamReader(match.player1.socket.getInputStream()));
+            BufferedReader in2 = new BufferedReader(new InputStreamReader(match.player2.socket.getInputStream()));
+            PrintWriter out1 = new PrintWriter(match.player1.socket.getOutputStream(), true);
+            PrintWriter out2 = new PrintWriter(match.player2.socket.getOutputStream(), true);
 
-            out1.println("DEBUT_MATCH X");
-            out2.println("DEBUT_MATCH O");
+            out1.println("START_MATCH X");
+            out2.println("START_MATCH O");
 
 
-            int tour = 0;
-            while (!match.termine) {
-                BufferedReader inActuel = tour % 2 == 0 ? in1 : in2;
-                PrintWriter outActuel = tour % 2 == 0 ? out1 : out2;
-                PrintWriter outAdverse = tour % 2 == 0 ? out2 : out1;
-                char symbole = tour % 2 == 0 ? 'X' : 'O';
+            int turn = 0;
+            while (!match.matchEnded) {
+                BufferedReader inActual = turn % 2 == 0 ? in1 : in2;
+                PrintWriter outCurrentMove = turn % 2 == 0 ? out1 : out2;
+                PrintWriter outEnemyMove = turn % 2 == 0 ? out2 : out1;
+                char symbol = turn % 2 == 0 ? 'X' : 'O';
 
-                outActuel.println("VOTRE_TOUR");
+                outCurrentMove.println("YOUR_TURN");
 
-                String[] coup = inActuel.readLine().split(",");
-                int x = Integer.parseInt(coup[0]);
-                int y = Integer.parseInt(coup[1]);
+                String[] playerMove = inActual.readLine().split(",");
+                int x = Integer.parseInt(playerMove[0]);
+                int y = Integer.parseInt(playerMove[1]);
 
-                if ((x < 3 && y < 3) && match.jeu.jouer(x, y, symbole)) {
-                    outAdverse.println("COUP_ADVERSE:" + x + "," + y);
-                    String resultat = match.jeu.checkVictoire();
-                    if (!resultat.equals("EN_COURS")) {
-                        match.termine = true;
-                        match.resultat = resultat;
-                        if (resultat.split("_").length > 1) {
-                            if (resultat.split("_")[1].contains("O")) {
-                                match.resultat = match.joueur2.pseudo;
+                if ((x < 3 && y < 3) && match.game.movePlayed(x, y, symbol)) {
+                    outEnemyMove.println("ENEMY_MOVE:" + x + "," + y);
+                    String result = match.game.checkWin();
+                    if (!result.equals("IN_PROGRESS")) {
+                        match.matchEnded = true;
+                        match.result = result;
+                        if (result.split("_").length > 1) {
+                            if (result.split("_")[1].contains("O")) {
+                                match.result = match.player2.username;
                             } else {
-                                match.resultat = match.joueur1.pseudo;
+                                match.result = match.player1.username;
                             }
                         }
-                        out1.println("FIN:" + match.resultat);
-                        out2.println("FIN:" + match.resultat);
+                        out1.println("END_GAME:" + match.result);
+                        out2.println("END_GAME:" + match.result);
                     }
-                    tour++;
+                    turn++;
                 } else {
-                    outActuel.println("COUP_INVALIDE");
+                    outCurrentMove.println("INVALID_MOVE");
                 }
             }
 
@@ -58,4 +58,5 @@ public class MatchHandler implements Runnable {
             e.printStackTrace();
         }
     }
+
 }

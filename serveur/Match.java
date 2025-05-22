@@ -1,13 +1,13 @@
 public class Match {
-    public Joueur joueur1;
-    public Joueur joueur2;
-    public Morpion jeu;
-    public boolean termine = false;
-    public String resultat = "EN_COURS";
+    public Player player1;
+    public Player player2;
+    public TicTacToe game;
+    public boolean matchEnded = false;
+    public String result = "EN_COURS";
 
-    public Match(Joueur j1, Joueur j2) {
-        this.joueur1 = j1;
-        this.joueur2 = j2;
-        this.jeu = new Morpion();
+    public Match(Player p1, Player p2) {
+        this.player1 = p1;
+        this.player2 = p2;
+        this.game = new TicTacToe();
     }
 }
