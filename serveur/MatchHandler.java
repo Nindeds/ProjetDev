@@ -32,7 +32,7 @@ public class MatchHandler implements Runnable {
                 int x = Integer.parseInt(coup[0]);
                 int y = Integer.parseInt(coup[1]);
 
-                if (match.jeu.jouer(x, y, symbole)) {
+                if (match.jeu.jouer(x, y, symbole) && (x < 3 || y < 3)) {
                     outAdverse.println("COUP_ADVERSE:" + x + "," + y);
                     String resultat = match.jeu.checkVictoire();
                     if (!resultat.equals("EN_COURS")) {

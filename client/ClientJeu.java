@@ -77,7 +77,7 @@ public class ClientJeu extends Morpion{
         initPlateau();
         char playerSymbols = '0';
         char otherPlayerSymbols = '0';
-        Socket socket = new Socket("10.92.0.52", 12345);
+        Socket socket = new Socket("", 12345);
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
@@ -104,9 +104,13 @@ public class ClientJeu extends Morpion{
                 System.out.print("Entrez votre coup (x y) : ");
                 int x = sc.nextInt();
                 int y = sc.nextInt();
-                if (plateau[x][y] == ' ') {
-                    plateau[x][y] = playerSymbols;
+                while(x >= 3 || y >= 3) {
+                    System.out.print("Entrez votre coup (x y) : ");
+                    x = sc.nextInt();
+                    y = sc.nextInt();
                 }
+                plateau[x][y] = playerSymbols;
+
                 out.println(x + "," + y);
                 afficherPlateau(pseudo);
             } else if (msg.startsWith("COUP_ADVERSE")) {
@@ -118,6 +122,7 @@ public class ClientJeu extends Morpion{
                 afficherPlateau(pseudo);
             } else if (msg.startsWith("FIN")) {
                 String resultat = msg.split(":")[1];
+                System.out.println(resultat);
                 System.out.println("Fin du match. Résultat : " + resultat);
                 break;
             } else if (msg.equals("COUP_INVALIDE")) {
