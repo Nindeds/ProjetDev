@@ -93,7 +93,7 @@ public class ClientGame extends TicTacToe {
         initPlateau();
         char playerSymbol = '0';
         char otherPlayerSymbol = '0';
-        System.out.print("Enter the IP adress you want to connect to (if you are the server host you can enter localhost):");
+        System.out.print("Enter the IP adress you want to connect to (if you are the server host you can enter localhost) : ");
         String IPAdress = sc.nextLine();
         Socket socket = new Socket(IPAdress, 12345);
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -122,12 +122,14 @@ public class ClientGame extends TicTacToe {
                 System.out.print("Enter your move (x y) : ");
                 int x = sc.nextInt();
                 int y = sc.nextInt();
-                while(x >= 3 || y >= 3) {
+                while(x >= 3 || y >= 3 && boardGame[x][y] != ' ') {
                     System.out.print("Enter your move (x y) : ");
                     x = sc.nextInt();
                     y = sc.nextInt();
                 }
-                boardGame[x][y] = playerSymbol;
+                if (x < 3 && y < 3 && boardGame[x][y] == ' ') {
+                    boardGame[x][y] = playerSymbol;
+                }
 
                 out.println(x + "," + y);
                 showBoardGame(username);
@@ -140,7 +142,6 @@ public class ClientGame extends TicTacToe {
                 showBoardGame(username);
             } else if (msg.startsWith("END_GAME")) {
                 String result = msg.split(":")[1];
-                System.out.println(msg);
                 System.out.println("End of match. Result : " + msg.split(":")[1]);
                 break;
             } else if (msg.equals("INVALID_MOVE")) {
