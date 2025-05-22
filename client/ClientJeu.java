@@ -122,8 +122,8 @@ public class ClientJeu extends Morpion{
                 afficherPlateau(pseudo);
             } else if (msg.startsWith("FIN")) {
                 String resultat = msg.split(":")[1];
-                System.out.println(resultat);
-                System.out.println("Fin du match. Résultat : " + resultat);
+                System.out.println(msg);
+                System.out.println("Fin du match. Résultat : " + msg.split(":")[1]);
                 break;
             } else if (msg.equals("COUP_INVALIDE")) {
                 System.out.println("Coup invalide, réessayez.");
