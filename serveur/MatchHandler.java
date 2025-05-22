@@ -32,15 +32,18 @@ public class MatchHandler implements Runnable {
                 int x = Integer.parseInt(coup[0]);
                 int y = Integer.parseInt(coup[1]);
 
-                if (match.jeu.jouer(x, y, symbole) && (x < 3 || y < 3)) {
+                if ((x < 3 && y < 3) && match.jeu.jouer(x, y, symbole)) {
                     outAdverse.println("COUP_ADVERSE:" + x + "," + y);
                     String resultat = match.jeu.checkVictoire();
                     if (!resultat.equals("EN_COURS")) {
                         match.termine = true;
-                        if (resultat.split("_")[1].contains("O")) {
-                            match.resultat = match.joueur2.pseudo;
-                        } else {
-                            match.resultat = match.joueur1.pseudo;
+                        match.resultat = resultat;
+                        if (resultat.split("_").length > 1) {
+                            if (resultat.split("_")[1].contains("O")) {
+                                match.resultat = match.joueur2.pseudo;
+                            } else {
+                                match.resultat = match.joueur1.pseudo;
+                            }
                         }
                         out1.println("FIN:" + match.resultat);
                         out2.println("FIN:" + match.resultat);
