@@ -2,11 +2,13 @@ import java.io.*;
 import java.net.*;
 import java.sql.SQLOutput;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Scanner;
 
 public class ClientJeu extends Morpion{
     private static char[][] plateau = new char[3][3];
     private static Scanner sc = new Scanner(System.in);
+    private static Random random = new Random();
     public static void main(String[] args) throws IOException{
 
         System.out.println("===MORPION===");
@@ -38,6 +40,7 @@ public class ClientJeu extends Morpion{
                         break;
                     case 2:
                         jouerMultiplayer();
+                        break;
                     case 3:
                         // Thread.sleep(300);
                         System.out.println("Fermeture du jeu...");
@@ -73,11 +76,26 @@ public class ClientJeu extends Morpion{
         }
     }
 
+    public static void jouerTourIA(char joueur) {
+        System.out.println("Tour de l'IA...");
+        int ligne, colonne;
+        while (true) {
+            ligne = random.nextInt(3);
+            colonne = random.nextInt(3);
+            if (plateau[ligne][colonne] == ' ') {
+                plateau[ligne][colonne] = joueur;
+                break;
+            }
+        }
+    }
+
     public static void jouerMultiplayer() throws IOException {
         initPlateau();
         char playerSymbols = '0';
         char otherPlayerSymbols = '0';
-        Socket socket = new Socket("", 12345);
+        System.out.print("Veuillez entrer votre adresse IP :");
+        String adresseIP = sc.nextLine();
+        Socket socket = new Socket(adresseIP, 12345);
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
@@ -131,5 +149,74 @@ public class ClientJeu extends Morpion{
         }
 
         socket.close();
+    }
+    public  static void  jouerSolo() {
+        initPlateau();
+        char joueurHumain = 'X';
+        char joueurIA = 'O';
+
+        while (true) {
+            afficherPlateau("Vous");
+            jouerTour(joueurHumain);
+            if (verifierVictoire(joueurHumain)) {
+                afficherPlateau("Vous");
+                System.out.println("Vous avez gagné !");
+                break;
+            }
+            if (estPlein()) {
+                afficherPlateau("Vous");
+                System.out.println("Match nul !");
+                break;
+            }
+
+            jouerTourIA(joueurIA);
+            if (verifierVictoire(joueurIA)) {
+                afficherPlateau("IA");
+                System.out.println("L'IA a gagné !");
+                break;
+            }
+            if (estPlein()) {
+                afficherPlateau("IA");
+                System.out.println("Match nul !");
+                break;
+            }
+        }
+    }
+
+    public static boolean verifierVictoire(char joueur) {
+        for (int i = 0; i < 3; i++) {
+            if ((plateau[i][0] == joueur && plateau[i][1] == joueur && plateau[i][2] == joueur) ||
+                    (plateau[0][i] == joueur && plateau[1][i] == joueur && plateau[2][i] == joueur)) {
+                return true;
+            }
+        }
+        if ((plateau[0][0] == joueur && plateau[1][1] == joueur && plateau[2][2] == joueur) ||
+                (plateau[0][2] == joueur && plateau[1][1] == joueur && plateau[2][0] == joueur)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean estPlein() {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                if (plateau[i][j] == ' ')
+                    return false;
+        return true;
+    }
+    public static void jouerTour(char joueur) {
+        int ligne, colonne;
+        while (true) {
+            System.out.print("Joueur " + joueur + ", entrez votre position (x y) : ");
+            ligne = sc.nextInt();
+            colonne = sc.nextInt();
+
+            if (ligne >= 0 && ligne < 3 && colonne >= 0 && colonne < 3 && plateau[ligne][colonne] == ' ') {
+                plateau[ligne][colonne] = joueur;
+                break;
+            } else {
+                System.out.println("Position invalide. Réessayez.");
+            }
+        }
     }
 }
