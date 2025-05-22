@@ -119,11 +119,11 @@ public class ClientGame extends TicTacToe {
                 System.out.println("Your symbol is : " + playerSymbol);
                 showBoardGame(username);
             } else if (msg.equals("YOUR_TURN")) {
-                System.out.print("Enter your move (x y) : ");
+                System.out.print("EEnter your move (line(x) column(y)) : ");
                 int x = sc.nextInt();
                 int y = sc.nextInt();
                 while(x >= 3 || y >= 3 && boardGame[x][y] != ' ') {
-                    System.out.print("Enter your move (x y) : ");
+                    System.out.print("Enter your move (line(x) column(y)) : ");
                     x = sc.nextInt();
                     y = sc.nextInt();
                 }
@@ -208,7 +208,7 @@ public class ClientGame extends TicTacToe {
     public static void playerTurn(char player) {
         int line, column;
         while (true) {
-            System.out.print("Player " + player + ", enter your move (x y) : ");
+            System.out.print("Player " + player + ", enter your move (line(x) column(y)) : ");
             line = sc.nextInt();
             column = sc.nextInt();
 
