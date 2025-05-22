@@ -37,9 +37,13 @@ public class MatchHandler implements Runnable {
                     String resultat = match.jeu.checkVictoire();
                     if (!resultat.equals("EN_COURS")) {
                         match.termine = true;
-                        match.resultat = resultat;
-                        out1.println("FIN:" + resultat);
-                        out2.println("FIN:" + resultat);
+                        if (resultat.split("_")[1].contains("O")) {
+                            match.resultat = match.joueur2.pseudo;
+                        } else {
+                            match.resultat = match.joueur1.pseudo;
+                        }
+                        out1.println("FIN:" + match.resultat);
+                        out2.println("FIN:" + match.resultat);
                     }
                     tour++;
                 } else {
